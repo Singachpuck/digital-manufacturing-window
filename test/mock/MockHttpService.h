@@ -10,5 +10,4 @@ public:
     MOCK_METHOD(std::string, httpGetJson, (std::string serverName), (override));
 };
 
-
 #endif //MOCKHTTPSERVICE_H
