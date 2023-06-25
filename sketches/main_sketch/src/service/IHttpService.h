@@ -3,7 +3,7 @@
 
 #include <string>
 
-class HttpService {
+class IHttpService {
 public:
     virtual std::string httpGetJson(std::string serverName) = 0;
 };

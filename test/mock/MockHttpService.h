@@ -3,9 +3,9 @@
 
 #include "gmock/gmock.h"
 
-#include "service/HttpService.h"
+#include "service/IHttpService.h"
 
-class MockHttpService : public HttpService {
+class MockHttpService : public IHttpService {
 public:
     MOCK_METHOD(std::string, httpGetJson, (std::string serverName), (override));
 };

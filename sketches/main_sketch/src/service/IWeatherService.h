@@ -4,18 +4,18 @@
 #include <ctime>
 #include <utility>
 
-#include "HttpService.h"
-#include "model/Weather.h"
+#include "IHttpService.h"
+#include "../model/Weather.h"
 #include "ArduinoJson.h"
 
 
-class WeatherService {
+class IWeatherService {
 protected:
-    HttpService* httpService;
+    IHttpService* httpService;
     std::string baseEndpoint;
 
 public:
-    WeatherService(HttpService* httpService, std::string baseEndpoint):
+    IWeatherService(IHttpService* httpService, std::string baseEndpoint):
             httpService(httpService), baseEndpoint(std::move(baseEndpoint)) {}
 
     virtual DeserializationError getCurrentWeather(std::string& location, Weather* w) = 0;
@@ -27,7 +27,7 @@ public:
         return this->getForecastWeather(location, (now->tm_hour + 1) % 24, w);
     }
 
-    virtual ~WeatherService() = default;
+    virtual ~IWeatherService() = default;
 };
 
 #endif //WEATHERSERVICE_H

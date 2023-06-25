@@ -4,17 +4,17 @@
 #include <sstream>
 #include <utility>
 
-#include "../WeatherService.h"
+#include "../IWeatherService.h"
 
-class DefaultWeatherService : public WeatherService {
+class DefaultWeatherService : public IWeatherService {
 protected:
     std::string key;
     std::string currentMethod = "current.json";
     std::string forecastMethod = "forecast.json";
 
 public:
-    DefaultWeatherService(HttpService* httpService, std::string baseEndpoint, std::string key) :
-        WeatherService(httpService, std::move(baseEndpoint)), key(std::move(key)) {}
+    DefaultWeatherService(IHttpService* httpService, std::string baseEndpoint, std::string key) :
+            IWeatherService(httpService, std::move(baseEndpoint)), key(std::move(key)) {}
 
     DeserializationError getCurrentWeather(std::string& location, Weather* w) override;
     DeserializationError getForecastWeather(std::string &location, int hour, Weather *w) override;
