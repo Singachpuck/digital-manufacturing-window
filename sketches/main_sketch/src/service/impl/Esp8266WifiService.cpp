@@ -19,6 +19,7 @@ uint8_t DefaultWifiService::connectToWiFi(int n_retries) {
         Serial.println(F("WiFi connection FAILED"));
     }
     Serial.println(F("Setup finished!"));
+    Serial.println();
 
     return WiFi.status();
 }

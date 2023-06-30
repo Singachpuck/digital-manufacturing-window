@@ -7,7 +7,7 @@
 #include <ESP8266WiFi.h>
 #include <cstdint>
 
-#include "../../../creds.h"
+#include "../../../config.h"
 #include "../IWifiService.h"
 
 class DefaultWifiService : public IWifiService {

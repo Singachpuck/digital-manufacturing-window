@@ -83,4 +83,4 @@ googlemock/gtest
 /ALL_BUILD.vcxproj.filters
 /ALL_BUILD.vcxproj
 
-creds.h
+config.h

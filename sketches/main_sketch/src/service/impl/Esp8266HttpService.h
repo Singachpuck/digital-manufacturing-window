@@ -7,7 +7,7 @@
 
 #include "../IHttpService.h"
 
-class Esp8266HttpService : public HttpService {
+class Esp8266HttpService : public IHttpService {
 private:
     WiFiClient* client;
     HTTPClient* http;
