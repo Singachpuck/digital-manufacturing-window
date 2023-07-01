@@ -6,15 +6,13 @@
 
 class WindowCloseState : public State {
 public:
-    WindowCloseState() : State(States::WINDOW_CLOSE) {}
+    WindowCloseState(Window* window, Shutters* shutters) : State(States::WINDOW_CLOSE, window, shutters) {}
 
     void update() override;
 
-    void onEnter() override;
+    void onEnter(std::map<std::string, void*>& params) override;
 
     void onExit() override;
-
-    void onEvent(Event *event) override;
 };
 
 

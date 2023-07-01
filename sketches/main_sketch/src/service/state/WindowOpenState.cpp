@@ -1,17 +1,18 @@
 #include "WindowOpenState.h"
 
-void WindowOpenState::update() {
 
+void WindowOpenState::onEnter(std::map<std::string, void *>& params) {
+  this->prevState = (State*) params["prevState"];
+  Serial.println("Opening window...");
+  Blynk.virtualWrite(V10, "Opening");
 }
 
-void WindowOpenState::onEnter() {
-
+void WindowOpenState::update() {
+    delay(2000);
+    this->sm->change(this->prevState->name, EMPTY_PARAMS);
 }
 
 void WindowOpenState::onExit() {
-
-}
-
-void WindowOpenState::onEvent(Event *event) {
-
+  this->window->openFlag = true;
+  Blynk.virtualWrite(V10, "Opened");
 }

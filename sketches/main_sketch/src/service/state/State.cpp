@@ -1,15 +1,18 @@
 #include "State.h"
 
+std::map<std::string, void*> EMPTY_PARAMS {};
+EmptyState EMPTY_STATE;
+
 void StateMachine::update() {
     this->currentState->update();
 }
 
-void StateMachine::change(State::States stateName) {
+void StateMachine::change(State::States stateName, std::map<std::string, void*>& params) {
     for (State* state : this->states) {
         if (state->name == stateName) {
             this->currentState->onExit();
             this->currentState = state;
-            this->currentState->onEnter();
+            this->currentState->onEnter(params);
             return;
         }
     }
@@ -26,6 +29,6 @@ void StateMachine::onEvent(Event *event) {
 
 void EmptyState::update() {}
 
-void EmptyState::onEnter() {}
+void EmptyState::onEnter(std::map<std::string, void *>& params) {}
 
 void EmptyState::onExit() {}

@@ -6,9 +6,9 @@
 
 class ShuttersUpState : public State {
 public:
-    ShuttersUpState() : State(States::SHUTTERS_UP) {}
+    ShuttersUpState(Window* window, Shutters* shutters) : State(States::SHUTTERS_UP, window, shutters) {}
 
-    void onEnter() override;
+    void onEnter(std::map<std::string, void*>& params) override;
 
     void update() override;
 

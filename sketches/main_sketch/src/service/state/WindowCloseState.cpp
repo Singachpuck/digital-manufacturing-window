@@ -1,17 +1,18 @@
 #include "WindowCloseState.h"
 
-void WindowCloseState::update() {
 
+void WindowCloseState::onEnter(std::map<std::string, void *>& params) {
+  this->prevState = (State*) params["prevState"];
+  Serial.println("Closing window...");
+  Blynk.virtualWrite(V10, "Closing");
 }
 
-void WindowCloseState::onEnter() {
-
+void WindowCloseState::update() {
+  delay(2000);
+  this->sm->change(this->prevState->name, EMPTY_PARAMS);
 }
 
 void WindowCloseState::onExit() {
-
-}
-
-void WindowCloseState::onEvent(Event *event) {
-
+    this->window->openFlag = false;
+    Blynk.virtualWrite(V10, "Closed");
 }

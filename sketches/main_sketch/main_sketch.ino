@@ -1,6 +1,8 @@
 #include <BlynkSimpleEsp8266.h>
 
 #include "src/service/impl/Esp8266WifiService.h"
+#include "src/model/Window.h"
+#include "src/model/Shutters.h"
 #include "src/service/state/State.h"
 #include "src/service/state/ManualListeningState.h"
 #include "src/service/state/AutomaticListeningState.h"
@@ -18,33 +20,34 @@ BlynkTimer timer;
 
 DefaultWifiService wifiService;
 
+// Model
+Window window;
+Shutters shutters;
+
 // States configuration
-ManualListeningState manualState;
-AutomaticListeningState automaticState;
-WindowOpenState windowOpenState;
-WindowCloseState windowCloseState;
-ShuttersDownState shuttersDownState;
-ShuttersUpState shuttersUpState;
+ManualListeningState manualState(&window, &shutters);
+AutomaticListeningState automaticState(&window, &shutters);
+WindowOpenState windowOpenState(&window, &shutters);
+WindowCloseState windowCloseState(&window, &shutters);
+ShuttersDownState shuttersDownState(&window, &shutters);
+ShuttersUpState shuttersUpState(&window, &shutters);
 StateMachine sm;
 
 EventPublisher ep;
 
 
 BLYNK_WRITE(V0) {
-  int value = param.asInt();
-  ChangeListeningStateEvent e(value);
+  ChangeListeningStateEvent e(param.asInt());
   ep.publish(e);
 }
 
 BLYNK_WRITE(V1) {
-  int value = param.asInt();
-  WindowOpenCloseEvent e(value);
+  WindowOpenCloseEvent e(param.asInt());
   ep.publish(e);
 }
 
 BLYNK_WRITE(V2) {
-  int value = param.asInt();
-  ShuttersUpDownEvent e(value);
+  ShuttersUpDownEvent e(param.asInt());
   ep.publish(e);
 }
 
@@ -52,7 +55,7 @@ bool connected = false;
 
 void setup() {
   Serial.begin(9600);
-  delay(1000);
+  delay(500);
   connected = wifiService.connectToWiFi(50) == WL_CONNECTED;
 
   Blynk.config(BLYNK_AUTH_TOKEN);
@@ -66,7 +69,14 @@ void setup() {
 
   ep.subscribe(&sm);
 
-  sm.change(State::States::MANUAL);
+  sm.change(State::States::MANUAL, EMPTY_PARAMS);
+
+  // Make sure that window is closed while bootstrapping the app
+  window.openFlag = false;
+  Blynk.virtualWrite(V10, "Closed");
+  // Make sure that shutters are rolled up before bootstrapping the app
+  shutters.rollFlag = false;
+  Blynk.virtualWrite(V11, "Up");
 }
 
 void loop() {

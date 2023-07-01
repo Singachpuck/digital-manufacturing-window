@@ -8,11 +8,11 @@
 
 class ManualListeningState : public State {
 public:
-    ManualListeningState() : State(States::MANUAL) {}
+    ManualListeningState(Window* window, Shutters* shutters) : State(States::MANUAL, window, shutters) {}
 
     void update() override;
 
-    void onEnter() override;
+    void onEnter(std::map<std::string, void*>& params) override;
 
     void onExit() override;
 
