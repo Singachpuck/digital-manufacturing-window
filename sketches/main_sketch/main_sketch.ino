@@ -92,6 +92,8 @@ void weatherUpdate() {
 bool connected = false;
 
 void setup() {
+  pinMode(D0, OUTPUT);
+  pinMode(D1, OUTPUT);
   Serial.begin(9600);
   delay(500);
   connected = wifiService.connectToWiFi(50) == WL_CONNECTED;
