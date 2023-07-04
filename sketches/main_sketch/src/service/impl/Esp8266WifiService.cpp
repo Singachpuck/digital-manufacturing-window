@@ -1,6 +1,6 @@
 #include "Esp8266WifiService.h"
 
-uint8_t DefaultWifiService::connectToWiFi(int n_retries) {
+uint8_t Esp8266WifiService::connectToWiFi(int n_retries) {
     Serial.println();
     Serial.print(F("Connecting to WiFi"));
     WiFi.begin(WIFI_SSID, WIFI_PWD);

@@ -1,6 +1,9 @@
+#include <ArduinoJson.h>
 #include <BlynkSimpleEsp8266.h>
 
 #include "src/service/impl/Esp8266WifiService.h"
+#include "src/service/impl/Esp8266HttpService.h"
+#include "src/service/impl/DefaultWeatherService.h"
 #include "src/model/Window.h"
 #include "src/model/Shutters.h"
 #include "src/service/state/State.h"
@@ -15,18 +18,28 @@
 #include "src/service/event/ChangeListeningStateEvent.h"
 #include "src/service/event/ShuttersUpDownEvent.h"
 #include "src/service/event/WindowOpenCloseEvent.h"
+#include "src/service/event/WeatherUpdateEvent.h"
+
+#define WEATHER_UPDATE_INTERVAL 600000L
+#define WINDOW_ROTATE_TIME 2000
 
 BlynkTimer timer;
 
-DefaultWifiService wifiService;
+// Services
+WiFiClient wifiClient;
+HTTPClient httpClient;
+Esp8266WifiService wifiService;
+Esp8266HttpService httpService(&wifiClient, &httpClient);
+DefaultWeatherService weatherService(&httpService, WEATHER_API_ENDPOINT, WEATHER_API_KEY);
 
 // Model
-Window window;
+Weather weather(DEVICE_LOCATION);
+Window window(D0, D1, WINDOW_ROTATE_TIME);
 Shutters shutters;
 
 // States configuration
 ManualListeningState manualState(&window, &shutters);
-AutomaticListeningState automaticState(&window, &shutters);
+AutomaticListeningState automaticState(&weather, &window, &shutters);
 WindowOpenState windowOpenState(&window, &shutters);
 WindowCloseState windowCloseState(&window, &shutters);
 ShuttersDownState shuttersDownState(&window, &shutters);
@@ -49,6 +62,22 @@ BLYNK_WRITE(V1) {
 BLYNK_WRITE(V2) {
   ShuttersUpDownEvent e(param.asInt());
   ep.publish(e);
+}
+
+void weatherUpdate() {
+  Serial.println("Calling weather forecast...");
+  weatherService.updateWeather(&weather);
+  Serial.println();
+  Serial.println("Weather:");
+  Serial.print("Temperature: ");
+  Serial.println(weather.temperature);
+  Serial.print("Precipitation: ");
+  Serial.println(weather.precipitation);
+  Serial.print("Wind KpH: ");
+  Serial.println(weather.windKpH);
+  Serial.println();
+  WeatherUpdateEvent weatherUpdateEvent;
+  ep.publish(weatherUpdateEvent);
 }
 
 bool connected = false;
@@ -77,6 +106,9 @@ void setup() {
   // Make sure that shutters are rolled up before bootstrapping the app
   shutters.rollFlag = false;
   Blynk.virtualWrite(V11, "Up");
+
+  weatherUpdate();
+  timer.setInterval(WEATHER_UPDATE_INTERVAL, weatherUpdate);
 }
 
 void loop() {

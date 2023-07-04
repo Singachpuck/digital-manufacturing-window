@@ -3,11 +3,15 @@
 
 #include "State.h"
 #include "../event/ChangeListeningStateEvent.h"
+#include "../event/WeatherUpdateEvent.h"
+#include "../../model/Weather.h"
 
 class AutomaticListeningState : public State {
 
 public:
-    AutomaticListeningState(Window* window, Shutters* shutters) : State(States::AUTOMATIC, window, shutters) {}
+    Weather* weather;
+
+    AutomaticListeningState(Weather* weather, Window* window, Shutters* shutters) : State(States::AUTOMATIC, window, shutters), weather(weather) {}
 
     void update() override;
 

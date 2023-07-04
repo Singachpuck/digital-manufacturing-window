@@ -1,6 +1,7 @@
 #ifndef DEFAULTWEATHERSERVICE_H
 #define DEFAULTWEATHERSERVICE_H
 
+#include <ArduinoJson.h>
 #include <sstream>
 #include <utility>
 
@@ -16,8 +17,9 @@ public:
     DefaultWeatherService(IHttpService* httpService, std::string baseEndpoint, std::string key) :
             IWeatherService(httpService, std::move(baseEndpoint)), key(std::move(key)) {}
 
-    DeserializationError getCurrentWeather(std::string& location, Weather* w) override;
-    DeserializationError getForecastWeather(std::string &location, int hour, Weather *w) override;
+    DeserializationError getCurrentWeather(Weather* w) override;
+    DeserializationError getForecastWeather(int hour, Weather *w) override;
+    void updateWeather(Weather *w) override;
 
     ~DefaultWeatherService() override = default;
 };

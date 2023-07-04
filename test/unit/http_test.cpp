@@ -46,9 +46,9 @@ TEST_F(HttpPayloadTest, PayloadErrorTest) {
 }
 
 TEST_F(HttpPayloadTest, WeatherCurrentTest) {
-    Weather w;
     std::string location = "Rennes";
-    DeserializationError err = weatherService->getCurrentWeather(location, &w);
+    Weather w(location);
+    DeserializationError err = weatherService->getCurrentWeather(&w);
 
     EXPECT_EQ(err, DeserializationError::Ok);
     EXPECT_FLOAT_EQ(w.temperature, 20.0);
@@ -57,9 +57,9 @@ TEST_F(HttpPayloadTest, WeatherCurrentTest) {
 }
 
 TEST_F(HttpPayloadTest, WeatherForecastTest) {
-    Weather w;
     std::string location = "Paris";
-    DeserializationError err = weatherService->getForecastWeather(location, &w);
+    Weather w(location);
+    DeserializationError err = weatherService->getForecastWeather(&w);
 
     EXPECT_EQ(err, DeserializationError::Ok);
     EXPECT_FLOAT_EQ(w.temperature, 26.3);

@@ -8,6 +8,6 @@ include_directories(${gmock_SOURCE_DIR}/include ${gmock_SOURCE_DIR})
 set(sketches_dir ${CMAKE_CURRENT_SOURCE_DIR}/../sketches/main_sketch/src)
 set(mock_dir ${CMAKE_CURRENT_SOURCE_DIR}/mock)
 
-add_executable(unit_test_run unit/load_test.cpp unit/http_test.cpp ${sketches_dir}/service/impl/DefaultWeatherService.cpp)
+add_executable(unit_test_run unit/load_test.cpp unit/http_test.cpp unit/publish_test.cpp ${sketches_dir}/service/impl/DefaultWeatherService.cpp ${sketches_dir}/service/event/EventPublisher.cpp)
 target_include_directories(unit_test_run PUBLIC ${sketches_dir} ${mock_dir} lib/ArduinoJson-v6.21.2)
 target_link_libraries(unit_test_run gtest gtest_main gmock gmock_main)

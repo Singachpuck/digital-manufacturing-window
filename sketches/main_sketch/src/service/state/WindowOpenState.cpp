@@ -8,7 +8,9 @@ void WindowOpenState::onEnter(std::map<std::string, void *>& params) {
 }
 
 void WindowOpenState::update() {
-    delay(2000);
+    digitalWrite(window->rotateClockPin, HIGH);
+    delay(window->rotateTime);
+    digitalWrite(window->rotateClockPin, LOW);
     this->sm->change(this->prevState->name, EMPTY_PARAMS);
 }
 

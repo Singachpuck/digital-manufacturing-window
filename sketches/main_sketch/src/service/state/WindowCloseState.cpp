@@ -8,7 +8,9 @@ void WindowCloseState::onEnter(std::map<std::string, void *>& params) {
 }
 
 void WindowCloseState::update() {
-  delay(2000);
+  digitalWrite(window->rotateCounterClockPin, HIGH);
+  delay(window->rotateTime);
+  digitalWrite(window->rotateCounterClockPin, LOW);
   this->sm->change(this->prevState->name, EMPTY_PARAMS);
 }
 

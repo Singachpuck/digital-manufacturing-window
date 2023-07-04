@@ -8,6 +8,7 @@ public:
         CHANGE_LISTENING_STATE,
         WINDOW_OPEN_CLOSE,
         SHUTTERS_UP_DOWN,
+        WEATHER_UPDATE,
         EMPTY
     };
 

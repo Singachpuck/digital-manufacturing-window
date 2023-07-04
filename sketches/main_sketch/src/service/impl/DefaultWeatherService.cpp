@@ -1,8 +1,8 @@
 #include "DefaultWeatherService.h"
 
-DeserializationError DefaultWeatherService::getCurrentWeather(std::string& location, Weather* w) {
+DeserializationError DefaultWeatherService::getCurrentWeather(Weather* w) {
     std::ostringstream oss;
-    oss << baseEndpoint << "/" << currentMethod << "?q=" << location << "&key=" << key;
+    oss << baseEndpoint << "/" << currentMethod << "?q=" << w->location << "&key=" << key;
     std::string endpoint = oss.str();
     std::string payload = httpService->httpGetJson(endpoint);
 
@@ -20,9 +20,9 @@ DeserializationError DefaultWeatherService::getCurrentWeather(std::string& locat
     return err;
 }
 
-DeserializationError DefaultWeatherService::getForecastWeather(std::string &location, int hour, Weather *w) {
+DeserializationError DefaultWeatherService::getForecastWeather(int hour, Weather *w) {
     std::ostringstream oss;
-    oss << baseEndpoint << "/" << forecastMethod << "?q=" << location << "&key=" << key << "&hour=" << hour;
+    oss << baseEndpoint << "/" << forecastMethod << "?q=" << w->location << "&key=" << key << "&hour=" << hour;
     std::string endpoint = oss.str();
 
     std::string payload = httpService->httpGetJson(endpoint);
@@ -39,4 +39,14 @@ DeserializationError DefaultWeatherService::getForecastWeather(std::string &loca
     }
 
     return err;
+}
+
+void DefaultWeatherService::updateWeather(Weather *w) {
+    std::time_t t = std::time(nullptr);
+    std::tm* now = std::localtime(&t);
+    if (now->tm_min < 30) {
+      this->getCurrentWeather(w);
+    } else {
+      IWeatherService::getForecastWeather(w);
+    }
 }

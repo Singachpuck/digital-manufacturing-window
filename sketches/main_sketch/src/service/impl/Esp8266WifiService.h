@@ -10,7 +10,7 @@
 #include "../../../config.h"
 #include "../IWifiService.h"
 
-class DefaultWifiService : public IWifiService {
+class Esp8266WifiService : public IWifiService {
 public:
     uint8_t connectToWiFi(int n_retries);
 };
