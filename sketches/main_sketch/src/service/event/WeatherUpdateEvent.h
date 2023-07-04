@@ -3,7 +3,9 @@
 
 #include "Event.h"
 
-
+/**
+ * This event is published every time the weather has been updated.
+ */
 class WeatherUpdateEvent : public Event {
 public:
     WeatherUpdateEvent() : Event(EventType::WEATHER_UPDATE) {}

@@ -15,6 +15,11 @@ private:
 public:
     Esp8266HttpService(WiFiClient*, HTTPClient*);
 
+    /**
+     * Makes GET request to the serverName and returns it's payload.
+     * @param serverName the endpoint.
+     * @return
+     */
     std::string httpGetJson(std::string serverName) override;
 };
 

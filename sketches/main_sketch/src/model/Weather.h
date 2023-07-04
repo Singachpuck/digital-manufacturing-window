@@ -1,8 +1,16 @@
-#include <utility>
-
 #ifndef WEATHER_H
 #define WEATHER_H
 
+#include <utility>
+
+/**
+ * Represents weather structure.
+ * Contains the following fields:
+ * - location: current location of the weather.
+ * - temperature: temperature value (Celsius value)
+ * - windKpH: wind speed (kilometers per hour)
+ * - precipitation: level of precipitation (millimeters)
+ */
 class Weather {
 public:
     std::string location;

@@ -4,6 +4,9 @@
 
 #include "Event.h"
 
+/**
+ * This event is published every time window state change is triggerred.
+ */
 class WindowOpenCloseEvent : public Event {
 public:
     int stateValue;

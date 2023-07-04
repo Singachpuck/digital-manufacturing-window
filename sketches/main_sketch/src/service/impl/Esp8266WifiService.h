@@ -12,6 +12,11 @@
 
 class Esp8266WifiService : public IWifiService {
 public:
+    /**
+     * Tries to connect to WiFi n_retries times.
+     * @param n_retries number of retries.
+     * @return returns the status of connection after n_retries tries.
+     */
     uint8_t connectToWiFi(int n_retries);
 };
 

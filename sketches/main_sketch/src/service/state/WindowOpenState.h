@@ -3,7 +3,9 @@
 
 #include "State.h"
 
-
+/**
+ * State during which the window opens.
+ */
 class WindowOpenState : public State {
 public:
     WindowOpenState(Window* window, Shutters* shutters) : State(States::WINDOW_OPEN, window, shutters) {}

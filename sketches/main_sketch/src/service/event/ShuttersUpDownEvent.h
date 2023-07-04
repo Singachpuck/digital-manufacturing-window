@@ -4,6 +4,9 @@
 
 #include "Event.h"
 
+/**
+ * This event is published every time shutters state change is triggerred.
+ */
 class ShuttersUpDownEvent : public Event {
 public:
     int stateValue;

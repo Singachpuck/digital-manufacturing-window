@@ -3,7 +3,9 @@
 
 #include "State.h"
 
-
+/**
+ * State during which the window closes.
+ */
 class WindowCloseState : public State {
 public:
     WindowCloseState(Window* window, Shutters* shutters) : State(States::WINDOW_CLOSE, window, shutters) {}

@@ -4,6 +4,9 @@
 
 #include "Event.h"
 
+/**
+ * This event is published every time the listening state mode has changed (manual <---> automatic).
+ */
 class ChangeListeningStateEvent : public Event {
 public:
     int stateValue;

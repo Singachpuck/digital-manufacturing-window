@@ -6,6 +6,10 @@
 #include "../event/WeatherUpdateEvent.h"
 #include "../../model/Weather.h"
 
+/**
+ * State that represent Automatic listening mode of the system.
+ * While in this state, the model listens to it's sensors and update the window based on the sensor data.
+ */
 class AutomaticListeningState : public State {
 
 public:

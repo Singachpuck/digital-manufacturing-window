@@ -6,6 +6,11 @@
 #include "../event/WindowOpenCloseEvent.h"
 #include "../event/ShuttersUpDownEvent.h"
 
+/**
+ * State that represent Manual listening mode of the system.
+ * While in this state the model waits for changes to be triggered manually
+ * (i.e. by pressing control button in Blynk dashboard).
+ */
 class ManualListeningState : public State {
 public:
     ManualListeningState(Window* window, Shutters* shutters) : State(States::MANUAL, window, shutters) {}

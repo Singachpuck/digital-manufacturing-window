@@ -4,6 +4,7 @@
 #include "src/service/impl/Esp8266WifiService.h"
 #include "src/service/impl/Esp8266HttpService.h"
 #include "src/service/impl/DefaultWeatherService.h"
+#include "src/model/Weather.h"
 #include "src/model/Window.h"
 #include "src/model/Shutters.h"
 #include "src/service/state/State.h"
@@ -35,7 +36,7 @@ DefaultWeatherService weatherService(&httpService, WEATHER_API_ENDPOINT, WEATHER
 // Model
 Weather weather(DEVICE_LOCATION);
 Window window(D0, D1, WINDOW_ROTATE_TIME);
-Shutters shutters;
+Shutters shutters; // Shutters not supported for now
 
 // States configuration
 ManualListeningState manualState(&window, &shutters);
@@ -48,22 +49,29 @@ StateMachine sm;
 
 EventPublisher ep;
 
-
+// This function is called every time when Listening State button
+// changes it's state in Blynk dashboard
 BLYNK_WRITE(V0) {
   ChangeListeningStateEvent e(param.asInt());
   ep.publish(e);
 }
 
+// This function is called every time when Window button
+// changes it's state in Blynk dashboard
 BLYNK_WRITE(V1) {
   WindowOpenCloseEvent e(param.asInt());
   ep.publish(e);
 }
 
+// This function is called every time when Shutters button
+// changes it's state in Blynk dashboard
 BLYNK_WRITE(V2) {
   ShuttersUpDownEvent e(param.asInt());
   ep.publish(e);
 }
 
+// This function is called every 10 minutes to update Weather
+// object according to the current weather
 void weatherUpdate() {
   Serial.println("Calling weather forecast...");
   weatherService.updateWeather(&weather);
@@ -80,6 +88,7 @@ void weatherUpdate() {
   ep.publish(weatherUpdateEvent);
 }
 
+// Defines if the WiFi connection was successful
 bool connected = false;
 
 void setup() {
@@ -89,6 +98,7 @@ void setup() {
 
   Blynk.config(BLYNK_AUTH_TOKEN);
 
+  // Fill up State Machine with all possible states
   sm.addState(&manualState);
   sm.addState(&automaticState);
   sm.addState(&windowOpenState);
@@ -107,15 +117,18 @@ void setup() {
   shutters.rollFlag = false;
   Blynk.virtualWrite(V11, "Up");
 
+  // Update weather every 10 minutes
   weatherUpdate();
   timer.setInterval(WEATHER_UPDATE_INTERVAL, weatherUpdate);
 }
 
 void loop() {
   if (connected) {
+    // These 2 lines are required by Blynk
     Blynk.run();
     timer.run();
 
+    // Update the current state of State Machine
     sm.update();
   } else {
     Serial.println("Failed to connect to WiFi. Can not proceed!");

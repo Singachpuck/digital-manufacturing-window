@@ -3,6 +3,9 @@
 
 #include <cstdint>
 
+/**
+ * Basic interface for wifi service.
+ */
 class IWifiService {
 public:
     virtual uint8_t connectToWiFi(int n_retries) = 0;

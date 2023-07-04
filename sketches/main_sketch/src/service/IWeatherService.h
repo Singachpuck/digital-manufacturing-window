@@ -7,7 +7,9 @@
 #include "IHttpService.h"
 #include "../model/Weather.h"
 
-
+/**
+ * Basic interface for weather service.
+ */
 class IWeatherService {
 protected:
     IHttpService* httpService;

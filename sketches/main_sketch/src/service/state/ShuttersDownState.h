@@ -3,7 +3,9 @@
 
 #include "State.h"
 
-
+/**
+ * State during which the shutters go down.
+ */
 class ShuttersDownState : public State {
 public:
     ShuttersDownState(Window* window, Shutters* shutters) : State(States::SHUTTERS_DOWN, window, shutters) {}

@@ -1,7 +1,11 @@
 #ifndef EVENT_H
 #define EVENT_H
 
-
+/**
+ * Base class for the event.
+ * Defines enum with all the possible event types that may occur.
+ * Used by event publisher to publish certain event.
+ */
 class Event {
 public:
     enum EventType {

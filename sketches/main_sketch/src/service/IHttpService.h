@@ -3,6 +3,9 @@
 
 #include <string>
 
+/**
+ * Basic interface for http service.
+ */
 class IHttpService {
 public:
     virtual std::string httpGetJson(std::string serverName) = 0;
